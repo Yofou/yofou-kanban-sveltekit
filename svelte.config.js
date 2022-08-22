@@ -6,12 +6,17 @@ import { resolve } from "path"
 const config = {
 	// Consult https://github.com/sveltejs/svelte-preprocess
 	// for more information about preprocessors
-	preprocess: preprocess(),
+	preprocess: preprocess({
+		postcss: true
+	}),
 
 	kit: {
 		adapter: adapter(),
 		alias: {
-			"$styles": resolve("./src/styles/")
+			"$styles": resolve("./src/styles/"),
+			"$icons": resolve("./src/icons/"),
+			"$lib": resolve("./src/lib"),
+			"$components": resolve("./src/components"),
 		}
 	}
 };
