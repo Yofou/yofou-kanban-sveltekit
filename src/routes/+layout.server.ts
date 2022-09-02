@@ -1,7 +1,8 @@
 import type { LayoutServerLoad } from "./$types"
 
-export const load: LayoutServerLoad.auth = ({ locals }) => {
+export const load: LayoutServerLoad = ({ locals }) => {
 	return {
-		theme: locals.theme
+		theme: locals.theme,
+		session: locals.session.data,
 	}
 }

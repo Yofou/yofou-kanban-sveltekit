@@ -1,0 +1,13 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: example
+volumes:
+  db:
+    driver: local

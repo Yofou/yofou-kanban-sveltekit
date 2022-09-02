@@ -1,9 +1,9 @@
 <script lang="ts">
-	import "$styles/tailwind.css"
-	import "$styles/fonts.css"
+	import "$lib/styles/tailwind.css"
+	import "$lib/styles/fonts.css"
 	import type { LayoutData } from "./$types"
 
-	export let data: LayoutData.auth
+	export let data: LayoutData
 </script>
 
 <svelte:head>

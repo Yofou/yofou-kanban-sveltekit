@@ -13,8 +13,6 @@ const config = {
 	kit: {
 		adapter: adapter(),
 		alias: {
-			"$styles": resolve("./src/styles/"),
-			"$icons": resolve("./src/icons/"),
 			"$lib": resolve("./src/lib"),
 			"$components": resolve("./src/components"),
 		}

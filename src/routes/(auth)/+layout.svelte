@@ -1,12 +1,12 @@
 <script lang="ts">
-	import "$styles/fonts.css"
-	import "$styles/tailwind.css"
+	import "$lib/styles/fonts.css"
+	import "$lib/styles/tailwind.css"
 	import { invalidate } from "$app/navigation";
-	import Logo from "$icons/logo.svelte"
+	import Logo from "$components/icons/logo.svelte"
 	import type { LayoutData } from "./$types"
 	import { page } from "$app/stores";
 
-	export let data: LayoutData.auth
+	export let data: LayoutData
 	$: src = data.theme === "dark" ? "/sun.svg" : '/moon.svg'
 	$: alt = data.theme === "dark" ? "swap to light theme" : 'swap to dark theme'
 
@@ -35,7 +35,9 @@
 
 <div class="contents" class:dark={data.theme === "dark"}>
 	<nav class="h-[96px] bg-white dark:bg-grey-500 grid grid-cols-[repeat(2,max-content),1fr,max-content] items-center gap-4 px-8 text-[black] dark:text-white">
-		<Logo />
+		<a href="/">
+			<Logo />
+		</a>
 
 		<div class="w-[1px] bg-grey-200 dark:bg-grey-400 h-full"></div>
 
