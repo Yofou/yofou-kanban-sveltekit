@@ -12,10 +12,20 @@ test('When theme switched clicked for first time swap to light theme', async ({ 
 });
 
 test('When hitting the login/api endpoint with valid body struct return 200 status', async ({ request }) => {
+	
+	await request.post('/sign-up/api', {
+		data: JSON.stringify({
+			username: 'testing123',
+			email: 'testing123@gmail.com',
+			password: 'password123',
+			confirm: 'password123'
+		})
+	})
+
 	const response = await request.post("/login/api", {
 		data: JSON.stringify({
-			email: '',
-			password: ''
+			email: 'testing123@gmail.com',
+			password: 'password123'
 		})
 	})
 
