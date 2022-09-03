@@ -1,7 +1,7 @@
 <script lang="ts">
 	import "$lib/styles/fonts.css"
 	import "$lib/styles/tailwind.css"
-	import { invalidate } from "$app/navigation";
+	import { invalidateAll  } from "$app/navigation";
 	import Logo from "$components/icons/logo.svelte"
 	import type { LayoutData } from "./$types"
 	import { page } from "$app/stores";
@@ -15,7 +15,7 @@
 			method: "POST"
 		})
 
-		invalidate()
+		invalidateAll()
 	}
 </script>
 

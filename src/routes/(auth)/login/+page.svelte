@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { invalidateAll } from "$app/navigation";
 	import AuthContainer from "$components/auth-container.svelte"
 	import Button from "$components/button.svelte";
 	import Input from "$components/text-input.svelte";
@@ -10,8 +11,6 @@
 	}
 
 	let errors: LoginValidator
-	$: console.log(errors)
-
 	const onSubmit = async () => {
 		const res = await fetch("/login/api", {
 			method: "POST",
@@ -19,9 +18,10 @@
 		})
 
 		if (res.ok) {
-			console.log("succces")
+			console.log("login succces")
+			invalidateAll()
 		} else {
-			console.log("fail")
+			console.log("login fail")
 			errors = await res.json()
 		}
 	}

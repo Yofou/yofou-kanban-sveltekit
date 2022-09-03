@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { invalidateAll } from "$app/navigation";
 	import AuthContainer from "$components/auth-container.svelte"
 	import Button from "$components/button.svelte";
 	import Input from "$components/text-input.svelte";
@@ -23,6 +24,7 @@
 			errors = await res.json()
 			lastSavedAuth = {...auth}
 		} else {
+			invalidateAll()
 			// success
 		}
 	}

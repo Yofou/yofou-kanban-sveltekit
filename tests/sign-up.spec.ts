@@ -22,6 +22,7 @@ test('When hitting sign-up/api endpoint with valid body we should expect a statu
 	});
 
 	expect(response.status()).toBe(200);
+	await request.delete('/user')
 });
 
 test('When hitting sign-up/api endpoint with invalid body we should expect a status 400', async ({ request }) => {
@@ -76,4 +77,25 @@ test('When not filling out the sign up form, our validation errors should show u
 	await page.locator('form button').click();
 		
 	expect(await confirm.locator('span').innerText()).toBe('Password & Confirm does not match')
+})
+
+test('When filling out the sign up form with a valid a new account we should be redirected to dashboard', async ({ page, request }) => {
+	await page.goto("/sign-up")
+
+	const username = page.locator('input[name="username"]')
+	const email = page.locator('input[name="email"]')
+	const password = page.locator('input[type="password"]').nth(0)
+	const confirm = page.locator('input[type="password"]').nth(1)
+	const submit = page.locator('form button')
+
+	await username.fill('dummyacc123'),
+	await email.fill('dummyacc123@gmail.com'),
+	await password.fill('testingtesting123'),
+	await confirm.fill('testingtesting123'),
+
+	await submit.click()
+	await page.waitForNavigation()
+
+	expect(page.url()).toContain('dashboard')
+	await page.request.delete('/user')
 })

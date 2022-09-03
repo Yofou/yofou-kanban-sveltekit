@@ -12,7 +12,6 @@ test('When theme switched clicked for first time swap to light theme', async ({ 
 });
 
 test('When hitting the login/api endpoint with valid body struct return 200 status', async ({ request }) => {
-	
 	await request.post('/sign-up/api', {
 		data: JSON.stringify({
 			username: 'testing123',
@@ -29,7 +28,7 @@ test('When hitting the login/api endpoint with valid body struct return 200 stat
 		})
 	})
 
-	expect(response.ok()).toBeTruthy()
+	expect(response.status()).toBe(200)
 })
 
 test('When hitting the login/api endpoint with invalid body struct return 400 status', async ({ request }) => {
@@ -38,4 +37,25 @@ test('When hitting the login/api endpoint with invalid body struct return 400 st
 	})
 
 	expect(response.status()).toBe(400)
+})
+
+test('When filling out the login page with valid credentials should redirect to dashboard', async ({ request, page }) => {
+	await request.post('/sign-up/api', {
+		data: JSON.stringify({
+			username: 'testing123',
+			email: 'testing123@gmail.com',
+			password: 'password123',
+			confirm: 'password123'
+		})
+	})
+
+	await page.goto('/login')
+	expect(page.url()).toContain('login')
+	
+	await page.locator('input[type="text"]').fill('testing123@gmail.com')
+	await page.locator('input[type="password"]').fill('password123')
+
+	await page.locator('button.text-heading-s').click()
+	await page.waitForNavigation()
+	expect(page.url()).toContain('dashboard')
 })
