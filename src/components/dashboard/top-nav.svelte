@@ -5,6 +5,7 @@
 	import DropdownDialog from "./dropdown-dialog.svelte";
 	import Modal from "./modal.svelte";
 	import { page } from "$app/stores"
+	import { defferedIsOpen } from "$lib/stores/nav-aside";
 
 	let open = false
 	const onLogout = async () => {
@@ -32,13 +33,19 @@
 	}
 </script>
 
-<nav class="min-h-[96px] bg-white dark:bg-grey-500 grid grid-cols-[max-content,max-content,1fr,max-content,max-content] items-center px-8 gap-6" aria-label="theme and user navigation">
-	<Logo class="mr-2" />
+<nav 
+	class="min-h-[96px] z-20 transition-all bg-white dark:bg-grey-500 grid grid-cols-[max-content,max-content,1fr,max-content,max-content] items-center px-8 gap-6" aria-label="theme and user navigation"
+	class:translate-x-[300px]={$defferedIsOpen}																																				
+	class:isAsideOpen={$defferedIsOpen}
+>
+	{#if !$defferedIsOpen}
+		<Logo class="mr-2" />
 
-	<div class="w-[1px] h-full bg-grey-200 dark:bg-grey-400" />
-	<h2 class="text-grey-700 dark:text-white text-heading-xl">Platform launch</h2>
+		<div class="w-[1px] h-full bg-grey-200 dark:bg-grey-400" />
+	{/if}
+	<h2 class="text-grey-700 relative left-0 dark:text-white text-heading-xl">Platform launch</h2>
 
-	<Button on:click el="button" class="text-heading-m font-bold">+ Add New Task</Button>
+	<Button on:click el="button" class="text-heading-m font-bold col-start-[-3] col-end-[-2]">+ Add New Task</Button>
 	
 	<DropdownDialog bind:open position="right">
 		<button slot="action" on:click={() => open = !open}>
@@ -61,7 +68,21 @@
 
 		<div class="grid grid-cols-2 gap-4 w-full">
 			<Button on:click={onDeleteAccAction} class="bg-red-600 hover:bg-red-300" el="button">Delete</Button>
-				<Button on:click={() => open = false} class="bg-[white] hover:bg-white text-purple-600" el="button">Cancel</Button>
+			<Button on:click={() => delAccOpen = false} class="bg-[white] hover:bg-white text-purple-600" el="button">Cancel</Button>
 		</div>
 	</div>
 </Modal>
+
+<style>
+	:global(.isAsideOpen > *) {
+		transform: translateX(-300px);
+		transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	:global(.isAsideOpen > h2) {
+		position: relative;
+		will-change: left;
+		left: 300px;
+		transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+	}
+</style>

@@ -11,7 +11,7 @@
 <svelte:body on:keyup={onKeyUp} />
 
 {#if open}
-	<div transition:fade|local class="fixed top-0 left-0 w-screen h-screen bg-[black]/50 grid">
+	<div transition:fade|local class="fixed z-30 top-0 left-0 w-screen h-screen bg-[black]/50 grid">
 		<div use:clickOutside={() => open = false} class="contents">
 			<slot />
 		</div>
