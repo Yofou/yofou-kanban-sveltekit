@@ -5,7 +5,8 @@
 	import DropdownDialog from "./dropdown-dialog.svelte";
 	import Modal from "./modal.svelte";
 	import { page } from "$app/stores"
-	import { defferedIsOpen } from "$lib/stores/nav-aside";
+	import { defferedIsOpen, isAsideOpen } from "$lib/stores/nav-aside";
+	import { fade } from "svelte/transition"
 
 	let open = false
 	const onLogout = async () => {
@@ -35,13 +36,15 @@
 
 <nav 
 	class="min-h-[96px] z-20 transition-all bg-white dark:bg-grey-500 grid grid-cols-[max-content,max-content,1fr,max-content,max-content] items-center px-8 gap-6" aria-label="theme and user navigation"
-	class:translate-x-[300px]={$defferedIsOpen}																																				
-	class:isAsideOpen={$defferedIsOpen}
+	class:translate-x-[300px]={$defferedIsOpen}
+    class:isAsideOpen={$defferedIsOpen}
 >
-	{#if !$defferedIsOpen}
-		<Logo class="mr-2" />
+	{#if !$defferedIsOpen || ($defferedIsOpen && !$isAsideOpen)}
+		<div transition:fade>
+			<Logo class="mr-2" />
+		</div>
 
-		<div class="w-[1px] h-full bg-grey-200 dark:bg-grey-400" />
+		<div transition:fade class="w-[1px] h-full bg-grey-200 dark:bg-grey-400" />
 	{/if}
 	<h2 class="text-grey-700 relative left-0 dark:text-white text-heading-xl">Platform launch</h2>
 
@@ -80,9 +83,12 @@
 	}
 
 	:global(.isAsideOpen > h2) {
-		position: relative;
 		will-change: left;
 		left: 300px;
 		transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	:global(.isAsideOpen > svg), :global(.isAsideOpen > div) {
+		transform: translateX(0);
 	}
 </style>
