@@ -3,8 +3,9 @@
 	import Logo from "$components/icons/logo.svelte";
 	import AsideBoardButton from "./aside-board-button.svelte";
 	import { defferedIsOpen, isAsideOpen } from "$lib/stores/nav-aside";
-	import { fly } from "svelte/transition"
 	import ThemeSlider from "./theme-slider.svelte";
+	import { fly } from "svelte/transition";
+	import { tailwind } from "$lib/beziers/tailwind";
 
 	const onCloseAside = () => {
 		$isAsideOpen = false
@@ -12,7 +13,7 @@
 </script>
 
 {#if $defferedIsOpen}
-	<aside transition:fly={{ x: -300, opacity: 1, duration: 150 }} class="absolute w-[300px] h-full bg-white dark:bg-grey-500">
+	<aside transition:fly|local={{ x: -300, opacity: 1, duration: 150, easing: tailwind }} class="absolute w-[300px] border-r border-r-grey-400 h-full bg-white dark:bg-grey-500">
 		<nav class="w-full px-6 py-8 h-full grid grid-rows-[repeat(2,max-content),1fr,repeat(2,max-content)]">
 			<Logo />
 

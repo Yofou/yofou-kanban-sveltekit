@@ -1,23 +1,5 @@
 import test, { expect } from "@playwright/test";
-import type { Page } from "@playwright/test"
-
-const SignUpAndLogin = async (page: Page) => {
-	await page.request.post('/sign-up/api', {
-		data: JSON.stringify({
-			username: 'testingtestingtesting123',
-			email: 'testing123@gmail.com',
-			password: 'password123',
-			confirm: 'password123',
-		})
-	})
-
-	await page.request.post('/login/api', {
-		data: JSON.stringify({
-			email: 'testing123@gmail.com',
-			password: 'password123'
-		})
-	})
-}
+import { SignUpAndLogin } from "./dashboard-utils.js";
 
 test('Inside dashboard the options dropdown should open on click and close on click out', async ({ page }) => {
 	await SignUpAndLogin(page)

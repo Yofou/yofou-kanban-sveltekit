@@ -35,16 +35,16 @@
 </script>
 
 <nav 
-	class="min-h-[96px] z-20 transition-all bg-white dark:bg-grey-500 grid grid-cols-[max-content,max-content,1fr,max-content,max-content] items-center px-8 gap-6" aria-label="theme and user navigation"
+	class="min-h-[96px] z-20 transition-all border-b border-grey-400 bg-white dark:bg-grey-500 grid grid-cols-[max-content,max-content,1fr,max-content,max-content] items-center px-8 gap-6" aria-label="theme and user navigation"
 	class:translate-x-[300px]={$defferedIsOpen}
     class:isAsideOpen={$defferedIsOpen}
 >
 	{#if !$defferedIsOpen || ($defferedIsOpen && !$isAsideOpen)}
-		<div transition:fade>
+		<div transition:fade|local>
 			<Logo class="mr-2" />
 		</div>
 
-		<div transition:fade class="w-[1px] h-full bg-grey-200 dark:bg-grey-400" />
+		<div transition:fade|local class="w-[1px] h-full bg-grey-200 dark:bg-grey-400" />
 	{/if}
 	<h2 class="text-grey-700 relative left-0 dark:text-white text-heading-xl">Platform launch</h2>
 
@@ -90,5 +90,9 @@
 
 	:global(.isAsideOpen > svg), :global(.isAsideOpen > div) {
 		transform: translateX(0);
+	}
+
+	:global(.isAsideOpen > div:last-of-type) {
+		transform: translateX(-300px);
 	}
 </style>
