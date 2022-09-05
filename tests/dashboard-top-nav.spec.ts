@@ -1,12 +1,26 @@
 import test, { expect } from "@playwright/test";
+import type { Page } from "@playwright/test"
 
-test('Inside dashboard the options dropdown should open on click and close on click out', async ({ page }) => {
+const SignUpAndLogin = async (page: Page) => {
+	await page.request.post('/sign-up/api', {
+		data: JSON.stringify({
+			username: 'testingtestingtesting123',
+			email: 'testing123@gmail.com',
+			password: 'password123',
+			confirm: 'password123',
+		})
+	})
+
 	await page.request.post('/login/api', {
 		data: JSON.stringify({
 			email: 'testing123@gmail.com',
 			password: 'password123'
 		})
 	})
+}
+
+test('Inside dashboard the options dropdown should open on click and close on click out', async ({ page }) => {
+	await SignUpAndLogin(page)
 
 	await page.goto('/dashboard')
 	expect(page.url()).toContain('dashboard')
@@ -23,12 +37,7 @@ test('Inside dashboard the options dropdown should open on click and close on cl
 })
 
 test('Inside dashboard the options dropdown should allow the user to logout', async ({ page }) => {
-	await page.request.post('/login/api', {
-		data: JSON.stringify({
-			email: 'testing123@gmail.com',
-			password: 'password123'
-		})
-	})
+	await SignUpAndLogin(page)
 
 	await page.goto('/dashboard')
 	expect(page.url()).toContain('dashboard')
@@ -39,6 +48,23 @@ test('Inside dashboard the options dropdown should allow the user to logout', as
 	await optionAction.click()
 	await nav.locator('div.relative > div').locator('text=Logout').click()
 
+	await page.waitForNavigation()
+	expect(page.url()).toContain('login')
+})
+
+test('Inside dashboard the options dropdown should allow the user to delete there own account', async ({ page }) => {
+	await SignUpAndLogin(page)
+
+	await page.goto('/dashboard')
+	expect(page.url()).toContain('dashboard')
+
+	const nav = page.locator('nav')
+	const optionAction = page.locator('nav div.relative > button')
+
+	await optionAction.click()
+	await nav.locator('div.relative > div').locator('text=Delete Account').click()
+
+	await page.locator('nav + div').locator('text=Delete').last().click()
 	await page.waitForNavigation()
 	expect(page.url()).toContain('login')
 })

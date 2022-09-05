@@ -3,6 +3,7 @@ import SignUpValidator from '$lib/validators/sign-up';
 import { json } from '@sveltejs/kit';
 import { client } from '$lib/client';
 import { hash } from 'argon2';
+import { Prisma } from '@prisma/client';
 
 export const POST: RequestHandler = async ({ request, locals }) => {
 	const data = await request.json();
@@ -34,6 +35,15 @@ export const POST: RequestHandler = async ({ request, locals }) => {
 			});
 		}
 	} catch (err) {
+		if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2002") {
+			return json({
+				error: `${(err.meta?.target as string[])?.[0]}`,
+				success: false,
+			}, {
+				status: 400
+			})
+		}
+
 		return json({
 			error: err
 		}, { status: 500 })

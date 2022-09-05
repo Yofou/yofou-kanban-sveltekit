@@ -10,7 +10,7 @@
 
 <svelte:element 
 	on:click 
-		class="text-heading-s focus:outline focus:outline-purple-300/50 text-white bg-purple-600 hover:bg-purple-300  disabled:opacity-50 transition-colors px-6 py-4 rounded-[9999px] {$$props.class}" 
+	class="text-heading-s focus:outline focus:outline-purple-300/50 text-white bg-purple-600 hover:bg-purple-300  disabled:opacity-50 transition-colors px-6 py-4 rounded-[9999px] {$$props.class}" 
 	{href} 
 	this={el}
 >

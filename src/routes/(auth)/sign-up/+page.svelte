@@ -13,7 +13,7 @@
 	}
 
 	let lastSavedAuth: typeof auth | undefined = undefined
-	let errors: ValidatorReturn
+	let errors: ValidatorReturn & Partial<{ error: string }>
 	export const onSubmit = async () => {
 		const res = await fetch("/sign-up/api", {
 			 method: "POST",
@@ -75,6 +75,10 @@
 		>
 			Confirm Password
 		</Input>
+
+		{#if errors?.error}
+			<p class="text-red-600 text-body-l font-bold mb-4">{errors?.error}</p>
+		{/if}
 
 		<div class="w-full flex justify-between items-center">
 			<Button>

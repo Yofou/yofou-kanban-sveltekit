@@ -1,12 +1,12 @@
 <script lang="ts">
-import { invalidateAll } from "$app/navigation";
-
+	import { invalidateAll } from "$app/navigation";
 	import Button from "$components/button.svelte";
 	import Logo from "$components/icons/logo.svelte";
 	import DropdownDialog from "./dropdown-dialog.svelte";
+	import Modal from "./modal.svelte";
+	import { page } from "$app/stores"
 
 	let open = false
-
 	const onLogout = async () => {
 		const res = await fetch("/user/sign-out", {
 			method: "DELETE"
@@ -16,6 +16,18 @@ import { invalidateAll } from "$app/navigation";
 			err => ({})
 		)
 
+		invalidateAll()
+	}
+
+
+	let delAccOpen = false
+	$: account = $page.data?.session
+	const onDeleteAcc = () => {
+		delAccOpen = true
+	}
+
+	const onDeleteAccAction = async () => {
+		await fetch("/user/", { method: "DELETE" })
 		invalidateAll()
 	}
 </script>
@@ -37,7 +49,19 @@ import { invalidateAll } from "$app/navigation";
 			<button class="text-left">Edit Board</button>
 			<button class="text-left text-red-600">Delete Board</button>
 			<button class="text-left" on:click={onLogout}>Logout</button>
-			<button class="text-left text-red-600">Delete Acc</button>
+			<button class="text-left text-red-600" on:click={onDeleteAcc}>Delete Account</button>
 		</svelte:fragment>
 	</DropdownDialog>
 </nav>
+
+<Modal bind:open={delAccOpen}>
+	<div class="bg-white dark:bg-grey-500 rounded-[6px] w-full max-w-[480px] min-h-[229px] p-8 place-self-center grid grid-rows-[max-content,1fr,max-content] gap-6">
+		<h2 class="text-heading-l text-red-600">Delete This Account</h2>
+		<p class="text-body-l text-grey-300">Are you sure you want to delete the ‘{account?.name}‘ This action will remove all boards, columns and tasks and cannot be reversed.</p>
+
+		<div class="grid grid-cols-2 gap-4 w-full">
+			<Button on:click={onDeleteAccAction} class="bg-red-600 hover:bg-red-300" el="button">Delete</Button>
+				<Button on:click={() => open = false} class="bg-[white] hover:bg-white text-purple-600" el="button">Cancel</Button>
+		</div>
+	</div>
+</Modal>

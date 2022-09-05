@@ -59,3 +59,14 @@ test('When filling out the login page with valid credentials should redirect to 
 	await page.waitForNavigation()
 	expect(page.url()).toContain('dashboard')
 })
+
+test('When filling out the login page with invalid credentials should pop up with error message', async ({ request, page }) => {
+	await page.goto('/login')
+	expect(page.url()).toContain('login')
+	
+	await page.locator('button.text-heading-s').click(),
+	await page.waitForTimeout(500)
+
+	expect(await page.locator('form > p').isVisible()).toBeTruthy()
+	expect(await page.locator('form > p').textContent()).toBe('Login Failed')
+})

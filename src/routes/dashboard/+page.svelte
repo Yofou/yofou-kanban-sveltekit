@@ -4,8 +4,8 @@
 	export let data: PageData; 
 </script>
 
-<div class:dark={data.theme === "dark"}>
+<div class="contents" class:dark={data.theme === "dark"}>
 	<TopNav />
-	<aside></aside>
 	<main></main>
+	<aside></aside>
 </div>

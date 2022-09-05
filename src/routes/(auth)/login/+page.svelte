@@ -39,6 +39,10 @@
 			Password
 		</Input>
 
+		{#if errors?._errors[0]}
+			<p class="text-red-600 text-body-l font-bold mb-4">{errors?._errors[0]}</p>
+		{/if}
+
 		<div class="w-full flex justify-between items-center">
 			<Button>
 				Submit

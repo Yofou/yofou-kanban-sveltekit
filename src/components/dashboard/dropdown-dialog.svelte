@@ -20,7 +20,7 @@
 			class="top-[calc(100%+18px)] absolute flex min-w-[192px] shadow-task-shadow min-h-[94px] rounded-[8px] bg-white dark:bg-grey-600 flex-col gap-4 p-4"
 			class:center={position === "center"}
 			class:right={position === "right"}
-			transition:fade={{ duration: 150 }}
+			transition:fade|local={{ duration: 150 }}
 		>
 			<slot name="items" />
 		</div>
