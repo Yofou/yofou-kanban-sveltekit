@@ -8,7 +8,7 @@
 </script>
 
 <main 
-	class="relative transition-transform w-full h-full" 
+	class="relative transition-transform w-full h-full {$$props.class}" 
 	class:translate-x-[300px]={$defferedIsOpen}
 >
 	{#if (!$isAsideOpen && !$defferedIsOpen)}
@@ -22,4 +22,6 @@
 			</div>
 		</button>
 	{/if}
+
+	<slot />
 </main>

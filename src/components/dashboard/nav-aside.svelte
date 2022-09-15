@@ -6,10 +6,17 @@
 	import ThemeSlider from "./theme-slider.svelte";
 	import { fly } from "svelte/transition";
 	import { tailwind } from "$lib/beziers/tailwind";
+	import NewBoardModal from "./new-board-modal.svelte";
+	import type { PageData } from "../../routes/dashboard/$types"
 
+	type Boards = PageData["boards"]
+	export let boards: Boards
 	const onCloseAside = () => {
 		$isAsideOpen = false
 	}
+
+	let newBoardOpen = false
+	const onNewBoardOpen = () => newBoardOpen = true
 </script>
 
 {#if $defferedIsOpen}
@@ -17,10 +24,12 @@
 		<nav class="w-full px-6 py-8 h-full grid grid-rows-[repeat(2,max-content),1fr,repeat(2,max-content)]">
 			<Logo />
 
-			<h2 class="font-font-jaka font-bold text-[12px] tracking-[2.4px] uppercase text-grey-300 mt-[54px]">all boards ()</h2>
+			<h2 class="font-font-jaka font-bold text-[12px] tracking-[2.4px] uppercase text-grey-300 mt-[54px]">all boards ({boards.length})</h2>
 			<div class="flex flex-col mt-5">
-				<AsideBoardButton>Platform Launch</AsideBoardButton>
-				<button class="-ml-6 py-4 text-purple-600 text-heading-m w-full rounded-r-[100px] flex gap-4">
+				{#each boards as board}
+					<AsideBoardButton id={board.id}>{board.name}</AsideBoardButton>	
+				{/each}
+				<button class="-ml-6 py-4 text-purple-600 text-heading-m w-full rounded-r-[100px] flex gap-4" on:click={onNewBoardOpen}>
 					<BoardButtonIcon class="ml-6" />
 					+ Create New Board
 				</button>
@@ -34,3 +43,5 @@
 		</nav>
 	</aside>
 {/if}
+
+<NewBoardModal bind:open={newBoardOpen} />

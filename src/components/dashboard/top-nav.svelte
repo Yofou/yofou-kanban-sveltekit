@@ -32,6 +32,23 @@
 		await fetch("/user/", { method: "DELETE" })
 		invalidateAll()
 	}
+
+	let delBoardOpen = false
+	const onDeleteBoard= () => [
+		delBoardOpen = true
+	]
+
+	$: active = $page.data?.active
+	const onDeleteBoardAction = async () => {
+		await fetch("/dashboard/api/boards", { 
+			method: "DELETE",
+			body: JSON.stringify({
+				id: active?.id
+			})
+		})
+		invalidateAll()
+		delBoardOpen = false
+	}
 </script>
 
 <nav 
@@ -56,13 +73,27 @@
 		</button>
 
 		<svelte:fragment slot="items">
-			<button class="text-left">Edit Board</button>
-			<button class="text-left text-red-600">Delete Board</button>
+			{#if active}
+				<button class="text-left">Edit Board</button>
+				<button class="text-left text-red-600" on:click={onDeleteBoard}>Delete Board</button>
+			{/if}
 			<button class="text-left" on:click={onLogout}>Logout</button>
 			<button class="text-left text-red-600" on:click={onDeleteAcc}>Delete Account</button>
 		</svelte:fragment>
 	</DropdownDialog>
 </nav>
+
+<Modal bind:open={delBoardOpen}>
+	<div class="bg-white dark:bg-grey-500 rounded-[6px] w-full max-w-[480px] min-h-[229px] p-8 place-self-center grid grid-rows-[max-content,1fr,max-content] gap-6">
+		<h2 class="text-heading-l text-red-600">Delete This Board</h2>
+		<p class="text-body-l text-grey-300">Are you sure you want to delete the ‘{active?.name}‘ This action will remove all columns and tasks on this board and cannot be reversed.</p>
+
+		<div class="grid grid-cols-2 gap-4 w-full">
+			<Button on:click={onDeleteBoardAction} class="bg-red-600 hover:bg-red-300" el="button">Delete</Button>
+			<Button on:click={() => delBoardOpen = false} class="bg-[white] hover:bg-white text-purple-600" el="button">Cancel</Button>
+		</div>
+	</div>
+</Modal>
 
 <Modal bind:open={delAccOpen}>
 	<div class="bg-white dark:bg-grey-500 rounded-[6px] w-full max-w-[480px] min-h-[229px] p-8 place-self-center grid grid-rows-[max-content,1fr,max-content] gap-6">
